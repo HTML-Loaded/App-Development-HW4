@@ -15,10 +15,11 @@ var artistName;
 var artistImg;
 var result;
 
-function consoleLogResults(list = []) {
-  list.forEach(Item => {
-    console.log(Item);
-  });
+
+function consoleLogResults(Result) {
+  for (const [key, value] of Object.entries(Result)) {
+    console.log(`${key}: ${value}`);
+  }
 }
 
 async function getArtist(token, id) {
@@ -27,10 +28,12 @@ async function getArtist(token, id) {
   });
   const artist = await response.json();
 
-  // artistName = artist.name;
-  // artistImg = artist.images[0]?.url;
-  artistList = [artist.name, artist.images[0]?.url];
-  return artistList;
+  let artistInfo = {
+  name: artist.name,
+  image: artist.images[0]?.url
+  };
+
+  return artistInfo;
 }
 
 async function getAlbum(token, id) {
@@ -39,8 +42,14 @@ async function getAlbum(token, id) {
   });
   const album = await response.json();
 
-  albumList = [album.images[0]?.url, album.name, album.release_date, album.type];
-  return albumList;
+  let albumInfo = {
+  name: album.name,
+  image: album.images[0]?.url,
+  release_date:  album.release_date,
+  type: album.type
+  };
+
+  return albumInfo;
 }
 
 async function getTrack(token, id) {
@@ -49,13 +58,20 @@ async function getTrack(token, id) {
   });
   const track = await response.json();
 
-  trackList = [track.album.images[0]?.url, track.name, track.album.name, track.track_number, track.duration_ms];
-  return trackList;
+  let trackInfo = {
+  image: track.album.images[0]?.url,
+  name: track.name,
+  album_name: track.album.name,
+  track_number: track.track_number,
+  track_duration: track.duration_ms
+  };
+  
+  return trackInfo;
 } 
 
 // IDs and secret token should come from Spotify
 localStorage.setItem("artist_id", "3MZsBdqDrRTJihTHQrO6Dq");
-localStorage.setItem("access_token", "BQDls4iHYkDxCYcQO6_t3y-NHCNDnW6elG6ewAU1KZ34CPcXl5o20-kEvJaR7RojFVFMtWAFuUI1rONB-Yhi0rGgKB2u8tPqy9oBW2PCiY2zXCUArBhOYKfjAxxlHrx_9fvusEklkNiQ");
+localStorage.setItem("access_token", "BQCyHaGNd1GE5CMl4QcBtTRTZ5rXqE0sfgrQTFE6OnldiD9MlhHTVcbzgPEKkbaO7Xa-xw-jf7b0qKAZn3v0Teqd3izPLOx468TBndn-uLsquabSP8R9C0udTM76j6fm8HlFa7j9byRh");
 localStorage.setItem("album_id_1", "5xiwCNC26RvgfwElNmIJoL")
 localStorage.setItem("album_id_2", "5mIImcsuqpiSXg8XvFr81I")
 localStorage.setItem("album_id_3", "39VuC5rYQHAnR6xQwm1WDk")
