@@ -22,6 +22,39 @@ function consoleLogResults(Result) {
   }
 }
 
+//div.track:nth-of-type(3)
+//article.album-card:nth-of-type(2)
+
+function injectArtist(input){
+  artistName = $("#artist-name");
+  artistImg = $(".artist-image img");
+
+  artistName.html(input.name);
+  artistImg.html(input.image);
+}
+
+function injectAlbum(num, input) {
+  albumName = $(`album-card:nth-of-type(${num}) h3`);
+  albumImage = $(`album-card:nth-of-type(${num}) img`);
+  albumReleaseDateAndType = $(`album-card:nth-of-type(${num}) p`);
+
+  albumName.html(input.name);
+  albumImage.html(input.image);
+  albumReleaseDateAndType.html(`${input.release_date} • ${input.type}`);
+}
+
+function injectTrack(num, input) {
+  trackName = $(`.track-title:nth-of-type(${num})`);
+  trackAlbumName = $(`.track-album:nth-of-type(${num})`);
+  trackAlbumImage = $(`.track:nth-of-type(${num}) img`);
+  trackDuration = $(`.track-duration:nth-of-type(${num})`);
+
+  trackName.html(input.name);
+  trackAlbumName.html(input.album_name);
+  trackAlbumImage.html(input.image);
+  trackDuration.html(convertMsToMinSec(input.track_duration));
+}
+
 async function getArtist(token, id) {
   const response = await fetch(`https://api.spotify.com/v1/artists/${id}`, {
     headers: {Authorization: `Bearer ${token}`},
