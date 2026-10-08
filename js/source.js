@@ -11,8 +11,6 @@ function convertMsToMinSec(ms) {
 
 // **************** Update code below  **************** 
 
-var artistName;
-var artistImg;
 var result;
 
 
@@ -22,37 +20,34 @@ function consoleLogResults(Result) {
   }
 }
 
-//div.track:nth-of-type(3)
-//article.album-card:nth-of-type(2)
-
 function injectArtist(input){
-  artistName = $("#artist-name");
-  artistImg = $(".artist-image img");
+  let nameElement = $("#artist-name");
+  let imgElement = $(".artist-image img");
 
-  artistName.html(input.name);
-  artistImg.html(input.image);
+  nameElement.html(input.name);
+  imgElement.attr("src", input.image);
 }
 
 function injectAlbum(num, input) {
-  albumName = $(`album-card:nth-of-type(${num}) h3`);
-  albumImage = $(`album-card:nth-of-type(${num}) img`);
-  albumReleaseDateAndType = $(`album-card:nth-of-type(${num}) p`);
+  let nameElement = $(`.album-card:nth-of-type(${num}) h3`);
+  let imgElement = $(`.album-card:nth-of-type(${num}) img`);
+  let albumReleaseDateAndType = $(`album-card:nth-of-type(${num}) p`);
 
-  albumName.html(input.name);
-  albumImage.html(input.image);
+  nameElement.html(input.name);
+  imgElement.attr("src", input.image);
   albumReleaseDateAndType.html(`${input.release_date} • ${input.type}`);
 }
 
 function injectTrack(num, input) {
-  trackName = $(`.track-title:nth-of-type(${num})`);
-  trackAlbumName = $(`.track-album:nth-of-type(${num})`);
-  trackAlbumImage = $(`.track:nth-of-type(${num}) img`);
-  trackDuration = $(`.track-duration:nth-of-type(${num})`);
+  let track = $(`.track:nth-of-type(${num})`);
 
-  trackName.html(input.name);
-  trackAlbumName.html(input.album_name);
-  trackAlbumImage.html(input.image);
-  trackDuration.html(convertMsToMinSec(input.track_duration));
+  track.find(".track-title").text(input.name);
+  track.find(".track-album").text(input.album_name);
+  track.find("img").attr("src", input.image);
+  track.find(".track-number").text(input.track_number);
+  track.find(".track-duration").text(
+    convertMsToMinSec(input.track_duration)
+  );
 }
 
 async function getArtist(token, id) {
@@ -104,7 +99,7 @@ async function getTrack(token, id) {
 
 // IDs and secret token should come from Spotify
 localStorage.setItem("artist_id", "3MZsBdqDrRTJihTHQrO6Dq");
-localStorage.setItem("access_token", "BQCyHaGNd1GE5CMl4QcBtTRTZ5rXqE0sfgrQTFE6OnldiD9MlhHTVcbzgPEKkbaO7Xa-xw-jf7b0qKAZn3v0Teqd3izPLOx468TBndn-uLsquabSP8R9C0udTM76j6fm8HlFa7j9byRh");
+localStorage.setItem("access_token", "");
 localStorage.setItem("album_id_1", "5xiwCNC26RvgfwElNmIJoL")
 localStorage.setItem("album_id_2", "5mIImcsuqpiSXg8XvFr81I")
 localStorage.setItem("album_id_3", "39VuC5rYQHAnR6xQwm1WDk")
@@ -127,28 +122,28 @@ async function load(){
 
 
   result = await getArtist(accessToken, artistID);
-  consoleLogResults(result);
+  injectArtist(result);
 
   result = await getAlbum(accessToken, albumID1);
-  consoleLogResults(result);
+  injectAlbum(1, result);
 
   result = await getAlbum(accessToken, albumID2);
-  consoleLogResults(result);
+  injectAlbum(2, result);
 
   result = await getAlbum(accessToken, albumID3);
-  consoleLogResults(result);
+  injectAlbum(3, result);
 
   result = await getAlbum(accessToken, albumID4);
-  consoleLogResults(result);
+  injectAlbum(4, result);
 
   result = await getTrack(accessToken, trackID1);
-  consoleLogResults(result);
+  injectTrack(1, result);
 
   result = await getTrack(accessToken, trackID2);
-  consoleLogResults(result);
+  injectTrack(2, result);
 
   result = await getTrack(accessToken, trackID3);
-  consoleLogResults(result);
+  injectTrack(3, result);
 
 };
 
